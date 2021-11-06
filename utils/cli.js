@@ -23,7 +23,7 @@ const createReadStreamFromCli = () => {
       output: process.stdout
     });
 
-    rl.question('Type your text\n', (answer) => {
+    rl.question('', (answer) => {
       rl.close();
       resolve(Readable.from([answer + '\n']));
     });
