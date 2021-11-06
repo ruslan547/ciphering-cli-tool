@@ -28,7 +28,35 @@ const caesarShift = (str, shift = 1) => {
   return output;
 };
 
+const atbash = (str) => {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const tebahpla = 'ZYXWVUTSRQPONMLKJIHGFEDCBA';
+  const alphabet1 = 'abcdefghijklmnopqrstuvwxyz';
+  const tebahpla1 = 'zyxwvutsrqponmlkjihgfedcba';
+  let decoded_string = '';
+
+  for (let i = 0; i < str.length; i++) {
+    const coded_letra = str.charAt(i);
+
+    if (/[^a-zA-Z]/.test(str[i])) {
+      decoded_string = decoded_string + str[i];
+    } else if (str[i] === str[i].toUpperCase()) {
+      const letraPosMayus = alphabet.indexOf(coded_letra);
+      const tebLetraPosMayus = tebahpla.charAt(letraPosMayus);
+
+      decoded_string = decoded_string + tebLetraPosMayus;
+    } else {
+      const letraPosMinus1 = alphabet1.indexOf(coded_letra);
+      const tebLetraPosMinus1 = tebahpla1.charAt(letraPosMinus1);
+
+      decoded_string = decoded_string + tebLetraPosMinus1;
+    }
+  }
+
+  return decoded_string;
+}
+
 module.exports = {
-  ALPHABET_COUNT,
-  caesarShift
+  caesarShift,
+  atbash
 }

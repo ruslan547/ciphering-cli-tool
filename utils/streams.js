@@ -1,8 +1,8 @@
 const { Writable, Transform } = require('stream');
 
 const {
-  ALPHABET_COUNT,
-  caesarShift
+  caesarShift,
+  atbash
 } = require('./ciphers');
 
 class WriteStream extends Writable {
@@ -29,16 +29,24 @@ class CipherStream extends Transform {
       return callback();
     }
 
-    // const shift = this.action === 'decode'
-    //   ? +this.shift
-    //   : (ALPHABET_COUNT - this.shift) % ALPHABET_COUNT;
-
     this.ciphers.forEach(cipher => {
       if (cipher[0] === 'C') {
         if (cipher[1] === '1') {
           chunk = caesarShift(chunk);
         } else {
           chunk = caesarShift(chunk, -1);
+        }
+      }
+
+      if (cipher[0] === 'A') {
+        chunk = atbash(chunk);
+      }
+
+      if (cipher[0] === 'R') {
+        if (cipher[0] === '1') {
+          chunk = caesarShift(chunk, 8);
+        } else {
+          chunk = caesarShift(chunk, -8);
         }
       }
     });
