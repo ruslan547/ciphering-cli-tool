@@ -1,22 +1,20 @@
 const fs = require('fs');
 
-const { getArgs } = require('./utils/cli');
-const { WriteStream } = require('./utils/streams');
+const { getArgs, createReadStreamFromCli } = require('./utils/cli');
+const { WriteStream, CipherStream } = require('./utils/streams');
 
-let readStream;
-let writeStream;
+(async () => {
+  const [ciphers, input, output] = getArgs();
 
-const [ciphers, input, output] = getArgs();
+  const readStream = input
+    ? fs.createReadStream(input, 'utf-8')
+    : await createReadStreamFromCli();
 
-if (input) {
-  readStream = fs.createReadStream(input, 'utf-8');
-}
+  const writeStream = output
+    ? fs.createWriteStream(output, { flags: 'a' })
+    : new WriteStream();
 
-if (output) {
-  writeStream = fs.createWriteStream(output, { flags: 'a' });
-}
-
-if (readStream) {
   readStream
-    .pipe(writeStream || new WriteStream())
-}
+    .pipe(new CipherStream({ ciphers }))
+    .pipe(writeStream)
+})()

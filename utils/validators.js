@@ -8,9 +8,9 @@ const validateConf = (conf) => !conf
   .split('-')
   .some(item =>
     item !== 'C1' &&
-    item !== 'C2' &&
+    item !== 'C0' &&
     item !== 'R1' &&
-    item !== 'R2' &&
+    item !== 'R0' &&
     item !== 'A'
   );
 
