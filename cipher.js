@@ -4,6 +4,7 @@ const { getArgs, createReadStreamFromCli } = require('./utils/cli');
 const { WriteStream, CipherStream } = require('./utils/streams');
 
 const [ciphers, input, output] = getArgs();
+
 const cipher = async (ciphers, input, output) => {
   const readStream = input
     ? fs.createReadStream(input, 'utf-8')

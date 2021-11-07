@@ -40,10 +40,18 @@ const getValidatedArgs = (args) => {
   const confValue = args[confIndex + 1];
   const inputs = args.filter(inputPredicate);
   const inputIndex = args.findIndex(inputPredicate);
-  const inputValue = args[inputIndex + 1];
+  const inputValue = inputIndex !== -1 ? args[inputIndex + 1] : undefined;
   const outputs = args.filter(outputPredicate);
   const outputIndex = args.findIndex(outputPredicate);
-  const outputValue = args[outputIndex + 1];
+  const outputValue = outputIndex !== -1 ? args[outputIndex + 1] : undefined;
+  const other = args.filter(item =>
+    item !== confValue &&
+    item !== inputValue &&
+    item !== outputValue &&
+    !confPredicate(item) &&
+    !inputPredicate(item) &&
+    !outputPredicate(item)
+  );
 
   if (!configs.length) {
     handleError('error: option -c, --config <value> missing\n');
@@ -75,6 +83,10 @@ const getValidatedArgs = (args) => {
 
   if (outputs.length && !validationFile(outputValue)) {
     handleError('error: option -o, --output <value> without value\n');
+  }
+
+  if (other.length) {
+    handleError(`error: invalid option${other.length ? 's' : ''} ${other.join(', ')}\n`);
   }
 
   const ciphers = confValue.split('-');
