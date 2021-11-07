@@ -86,7 +86,7 @@ const getValidatedArgs = (args) => {
   }
 
   if (other.length) {
-    handleError(`error: invalid option${other.length ? 's' : ''} ${other.join(', ')}\n`);
+    handleError(`error: invalid option${other.length > 1 ? 's' : ''} ${other.join(', ')}\n`);
   }
 
   const ciphers = confValue.split('-');
