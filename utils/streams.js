@@ -1,17 +1,11 @@
 const { Writable, Transform } = require('stream');
+const fs = require('fs');
 
 const {
   caesarShift,
   atbash
 } = require('./ciphers');
-
-class WriteStream extends Writable {
-  constructor(options = {}) {
-    super({ ...options, decodeStrings: false });
-  }
-
-  _write = (chunk) => process.stdout.write(chunk);
-}
+const { handleError } = require('./handleError');
 
 class CipherStream extends Transform {
   constructor(options = {}) {
@@ -53,6 +47,28 @@ class CipherStream extends Transform {
 
     this.push(chunk);
   }
+}
+
+class WriteStream extends Writable {
+  constructor(options = {}) {
+    super({ ...options, decodeStrings: false });
+
+    const { output } = options;
+
+    this.output = output;
+  }
+
+  _write = (chunk) => {
+    if (this.output) {
+      fs.appendFile(this.output, chunk, (err) => {
+        if (err) {
+          handleError(err.message);
+        }
+      });
+    } else {
+      process.stdout.write(chunk);
+    }
+  };
 }
 
 module.exports = {

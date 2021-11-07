@@ -1,6 +1,6 @@
 const ERROR_CODE = 1;
 
-const handleArgsError = (message) => {
+const handleError = (message) => {
   process.stderr.write(message);
   process.exit(ERROR_CODE);
 };
@@ -18,6 +18,6 @@ const handleAccessError = (err) => {
 };
 
 module.exports = {
-  handleArgsError,
+  handleError,
   handleAccessError
 }
