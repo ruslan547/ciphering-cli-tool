@@ -1,9 +1,6 @@
 const fs = require('fs');
 
-const {
-  handleError,
-  handleAccessError
-} = require('./handleError');
+const { ValidationError } = require('./errors');
 
 const { F_OK, R_OK } = fs.constants;
 
@@ -24,7 +21,13 @@ const validationFile = (file) => {
 
       return true;
     } catch (err) {
-      handleAccessError(err);
+      if (err.code === 'ENOENT') {
+        throw new ValidationError(`file '${err.path}' does not exist\n`);
+      } else if (err.code === 'EACCES') {
+        throw new ValidationError(`file '${err.path}' is not readable\n`);
+      } else {
+        throw err;
+      }
     }
   }
 
@@ -54,39 +57,39 @@ const getValidatedArgs = (args) => {
   );
 
   if (!configs.length) {
-    handleError('error: option -c, --config <value> missing\n');
+    throw new ValidationError('error: option -c, --config <value> missing\n');
   }
 
   if (configs.length > 1) {
-    handleError('error: option -c, --config <value> repeated more than once\n');
+    throw new ValidationError('error: option -c, --config <value> repeated more than once\n');
   }
 
   if (!confValue || confIndex + 1 === inputIndex) {
-    handleError('error: option -c, --config <value> without value\n');
+    throw new ValidationError('error: option -c, --config <value> without value\n');
   }
 
   if (!validateConf(confValue)) {
-    handleError('error: option -c, --config <value> value invalid\n');
+    throw new ValidationError('error: option -c, --config <value> value invalid\n');
   }
 
   if (inputs.length > 1) {
-    handleError('error: option -i, --input <value> repeated more than once\n');
+    throw new ValidationError('error: option -i, --input <value> repeated more than once\n');
   }
 
   if (inputs.length && !validationFile(inputValue)) {
-    handleError('error: option -i, --input <value> without value\n');
+    throw new ValidationError('error: option -i, --input <value> without value\n');
   }
 
   if (outputs.length > 1) {
-    handleError('error: option -o, --output <value> repeated more than once\n');
+    throw new ValidationError('error: option -o, --output <value> repeated more than once\n');
   }
 
   if (outputs.length && !validationFile(outputValue)) {
-    handleError('error: option -o, --output <value> without value\n');
+    throw new ValidationError('error: option -o, --output <value> without value\n');
   }
 
   if (other.length) {
-    handleError(`error: invalid option${other.length > 1 ? 's' : ''} ${other.join(', ')}\n`);
+    throw new ValidationError(`error: invalid option${other.length > 1 ? 's' : ''} ${other.join(', ')}\n`);
   }
 
   const ciphers = confValue.split('-');

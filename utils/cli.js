@@ -2,11 +2,16 @@ const { Readable } = require('stream');
 const readline = require('readline');
 
 const { getValidatedArgs } = require('./validators');
+const { handleError } = require('./handleError');
 
 const getArgs = () => {
   const args = process.argv.splice(2);
 
-  return getValidatedArgs(args);
+  try {
+    return getValidatedArgs(args);
+  } catch (err) {
+    handleError(err.message);
+  }
 };
 
 const createReadStreamFromCli = () => {
