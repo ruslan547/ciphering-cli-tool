@@ -1,18 +1,22 @@
-const fs = require('fs');
+const { pipeline } = require('stream');
 
 const { getArgs, createReadStreamFromCli } = require('./utils/cli');
-const { WriteStream, CipherStream } = require('./utils/streams');
+const { WriteStream, CipherStream, ReadStream } = require('./utils/streams');
+const { handleError } = require('./utils/handleError');
 
 const [ciphers, input, output] = getArgs();
 
 const cipher = async (ciphers, input, output) => {
   const readStream = input
-    ? fs.createReadStream(input, 'utf-8')
+    ? new ReadStream(input, 'utf-8')
     : await createReadStreamFromCli();
 
-  readStream
-    .pipe(new CipherStream({ ciphers }))
-    .pipe(new WriteStream({ output }));
+  pipeline(
+    readStream,
+    new CipherStream({ ciphers }),
+    new WriteStream({ output }),
+    handleError
+  );
 
   if (!input) {
     setImmediate(() => cipher(ciphers, input, output));

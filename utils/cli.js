@@ -10,7 +10,7 @@ const getArgs = () => {
   try {
     return getValidatedArgs(args);
   } catch (err) {
-    handleError(err.message);
+    handleError(err);
   }
 };
 
