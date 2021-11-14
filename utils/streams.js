@@ -58,15 +58,11 @@ class WriteStream extends Writable {
     this.output = output;
   }
 
-  _write = (chunk) => {
+  _write = (chunk, encoding, callback) => {
     if (this.output) {
-      fs.appendFile(this.output, chunk, (err) => {
-        if (err) {
-          handleError(err.message);
-        }
-      });
+      fs.appendFile(this.output, chunk, callback);
     } else {
-      process.stdout.write(chunk);
+      process.stdout.write(chunk, callback);
     }
   };
 }
