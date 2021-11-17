@@ -24,3 +24,7 @@ const cipher = async (ciphers, input, output) => {
 };
 
 cipher(ciphers, input, output);
+
+module.exports = {
+  cipher
+};

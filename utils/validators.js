@@ -61,7 +61,7 @@ const getValidatedArgs = (args) => {
   }
 
   if (configs.length > 1) {
-    throw new ValidationError('error: option -c, --config <value> repeated more than once\n');
+    throw new ValidationError('Error: You provided -c argument more than once\n');
   }
 
   if (!confValue || confIndex + 1 === inputIndex) {
