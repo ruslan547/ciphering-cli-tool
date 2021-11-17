@@ -63,3 +63,14 @@ describe('getArgs success', () => {
       .toEqual([['C1', 'C1', 'R0', 'A'], './input.txt', './output.txt']);
   });
 });
+
+describe('createReadStreamFromCli', () => {
+  it('should return promised stream', () => {
+    return createReadStreamFromCli()
+      .then(stream => {
+        stream.on('data', chunk => {
+          expect(chunk).toBe('mock text\n');
+        });
+      })
+  });
+});
