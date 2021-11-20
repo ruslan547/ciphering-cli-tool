@@ -107,6 +107,28 @@ describe('getArgs without correct output file', () => {
 });
 
 /**
+ * Input: User passes incorrent symbols in argument for --config;
+ * Result: Error message is shown;
+ */
+describe('getArgs without correct symbols for config', () => {
+  beforeEach(() => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'Z');
+    getArgs();
+  });
+
+  it('should call process.stderr.write with error message', () => {
+    expect(mockWrite)
+      .toHaveBeenCalledWith("error: option -c, --config <value> value invalid\n");
+  });
+
+  it('should call process.exit with 1', () => {
+    expect(mockExit)
+      .toHaveBeenCalledWith(1);
+  });
+});
+
+/**
    * Input: User passes correct sequence of symbols as argument for --config that matches regular expression;
    * Result: test passed
    * Take cipher usage scenarios from first task description usage examples.
