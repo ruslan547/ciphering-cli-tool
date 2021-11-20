@@ -85,6 +85,28 @@ describe('getArgs without correct input file', () => {
 });
 
 /**
+ * Input: User passes -o argument with path to directory that doesn't exist or with no read access;
+ * Result: Error message is shown;
+ */
+describe('getArgs without correct output file', () => {
+  beforeEach(() => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'R1', '-o', 'file.txt');
+    getArgs();
+  });
+
+  it('should call process.stderr.write with error message', () => {
+    expect(mockWrite)
+      .toHaveBeenCalledWith("file 'file.txt' does not exist\n");
+  });
+
+  it('should call process.exit with 1', () => {
+    expect(mockExit)
+      .toHaveBeenCalledWith(1);
+  });
+});
+
+/**
    * Input: User passes correct sequence of symbols as argument for --config that matches regular expression;
    * Result: test passed
    * Take cipher usage scenarios from first task description usage examples.
