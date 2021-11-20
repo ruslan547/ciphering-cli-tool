@@ -163,3 +163,68 @@ describe('createReadStreamFromCli', () => {
       })
   });
 });
+
+describe('getArgs without symbols for config', () => {
+  it('should call process.stderr.write with error message', () => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', '-i');
+    getArgs();
+    expect(mockWrite)
+      .toHaveBeenCalledWith('error: option -c, --config <value> without value\n');
+  });
+});
+
+describe('getArgs with some inputs', () => {
+  it('should call process.stderr.write with error message', () => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'A', '-i', './input.txt', '-i');
+    getArgs();
+
+    expect(mockWrite)
+      .toHaveBeenCalledWith('error: option -i, --input <value> repeated more than once\n');
+  });
+});
+
+describe('getArgs with some outputs', () => {
+  it('should call process.stderr.write with error message', () => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'A', '-o', './output.txt', '-o');
+    getArgs();
+
+    expect(mockWrite)
+      .toHaveBeenCalledWith('error: option -o, --output <value> repeated more than once\n');
+  });
+});
+
+describe('getArgs input without value', () => {
+  it('should call process.stderr.write with error message', () => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'A', '-i');
+    getArgs();
+
+    expect(mockWrite)
+      .toHaveBeenCalledWith('error: option -i, --input <value> without value\n');
+  });
+});
+
+describe('getArgs output without value', () => {
+  it('should call process.stderr.write with error message', () => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'A', '-o');
+    getArgs();
+
+    expect(mockWrite)
+      .toHaveBeenCalledWith('error: option -o, --output <value> without value\n');
+  });
+});
+
+describe('getArgs with other values', () => {
+  it('should call process.stderr.write with error message', () => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'A', 'other');
+    getArgs();
+
+    expect(mockWrite)
+      .toHaveBeenCalledWith('error: invalid option other\n');
+  });
+});

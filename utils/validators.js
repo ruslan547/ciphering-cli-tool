@@ -25,8 +25,6 @@ const validationFile = (file) => {
         throw new ValidationError(`file '${err.path}' does not exist\n`);
       } else if (err.code === 'EACCES') {
         throw new ValidationError(`file '${err.path}' is not readable\n`);
-      } else {
-        throw err;
       }
     }
   }
@@ -100,5 +98,6 @@ const getValidatedArgs = (args) => {
 }
 
 module.exports = {
-  getValidatedArgs
+  getValidatedArgs,
+  validationFile
 };
