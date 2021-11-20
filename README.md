@@ -29,3 +29,8 @@
  2. -i, --input: a path to input file
 
  3. -o, --output: a path to output file
+
+ ## How to run test
+
+ 1. ```npm run test```
+ 2. ```npm run test:coverage```
