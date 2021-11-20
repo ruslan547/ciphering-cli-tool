@@ -1,5 +1,9 @@
 const { getArgs, createReadStreamFromCli } = require('./cli');
 
+
+const mockWrite = jest.spyOn(process.stderr, 'write');
+const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => { });
+
 jest.mock('readline', () => ({
   createInterface: jest.fn().mockReturnValue(
     {
@@ -12,9 +16,6 @@ jest.mock('readline', () => ({
     }
   )
 }));
-
-const mockWrite = jest.spyOn(process.stderr, 'write');
-const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => { });
 
 /**
    * Input: User passes the same cli argument twice;
