@@ -23,7 +23,6 @@ const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => { });
    * result: Error: You provided -c argument more than once;
    */
 describe('getArgs the same cli argument twice', () => {
-
   beforeEach(() => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher', '-c', 'C1-C1-A-R0', '-c', 'C0');
@@ -46,7 +45,6 @@ describe('getArgs the same cli argument twice', () => {
  * Result: Error message is shown;
  */
 describe('getArgs without config', () => {
-
   beforeEach(() => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher');
@@ -56,6 +54,28 @@ describe('getArgs without config', () => {
   it('should call process.stderr.write with error message', () => {
     expect(mockWrite)
       .toHaveBeenCalledWith('error: option -c, --config <value> missing\n');
+  });
+
+  it('should call process.exit with 1', () => {
+    expect(mockExit)
+      .toHaveBeenCalledWith(1);
+  });
+});
+
+/**
+ * Input: User passes -i argument with path that doesn't exist or with no read access;
+ * Result: Error message is shown;
+ */
+describe('getArgs without correct input file', () => {
+  beforeEach(() => {
+    process.argv.length = 0;
+    process.argv.push('node', 'cipher', '-c', 'R1', '-i', 'file.txt');
+    getArgs();
+  });
+
+  it('should call process.stderr.write with error message', () => {
+    expect(mockWrite)
+      .toHaveBeenCalledWith("file 'file.txt' does not exist\n");
   });
 
   it('should call process.exit with 1', () => {
