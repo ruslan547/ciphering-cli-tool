@@ -35,7 +35,7 @@ describe('getArgs the same cli argument twice', () => {
       .toHaveBeenCalledWith('Error: You provided -c argument more than once\n');
   });
 
-  it('should call process.exit with 1', () => {
+  test('should call process.exit with 1', () => {
     expect(mockExit)
       .toHaveBeenCalledWith(1);
   });
@@ -52,12 +52,12 @@ describe('getArgs without config', () => {
     getArgs();
   });
 
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     expect(mockWrite)
       .toHaveBeenCalledWith('error: option -c, --config <value> missing\n');
   });
 
-  it('should call process.exit with 1', () => {
+  test('should call process.exit with 1', () => {
     expect(mockExit)
       .toHaveBeenCalledWith(1);
   });
@@ -74,12 +74,12 @@ describe('getArgs without correct input file', () => {
     getArgs();
   });
 
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     expect(mockWrite)
       .toHaveBeenCalledWith("file 'file.txt' does not exist\n");
   });
 
-  it('should call process.exit with 1', () => {
+  test('should call process.exit with 1', () => {
     expect(mockExit)
       .toHaveBeenCalledWith(1);
   });
@@ -96,12 +96,12 @@ describe('getArgs without correct output file', () => {
     getArgs();
   });
 
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     expect(mockWrite)
       .toHaveBeenCalledWith("file 'file.txt' does not exist\n");
   });
 
-  it('should call process.exit with 1', () => {
+  test('should call process.exit with 1', () => {
     expect(mockExit)
       .toHaveBeenCalledWith(1);
   });
@@ -118,12 +118,12 @@ describe('getArgs without correct symbols for config', () => {
     getArgs();
   });
 
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     expect(mockWrite)
       .toHaveBeenCalledWith("error: option -c, --config <value> value invalid\n");
   });
 
-  it('should call process.exit with 1', () => {
+  test('should call process.exit with 1', () => {
     expect(mockExit)
       .toHaveBeenCalledWith(1);
   });
@@ -135,7 +135,7 @@ describe('getArgs without correct symbols for config', () => {
    * Take cipher usage scenarios from first task description usage examples.
    */
 describe('getArgs success', () => {
-  it('should return correct args', () => {
+  test('should return correct args', () => {
     process.argv.length = 0;
     process.argv.push(
       'node',
@@ -154,7 +154,7 @@ describe('getArgs success', () => {
 });
 
 describe('createReadStreamFromCli', () => {
-  it('should return promised stream', () => {
+  test('should return promised stream', () => {
     return createReadStreamFromCli()
       .then(stream => {
         stream.on('data', chunk => {
@@ -165,7 +165,7 @@ describe('createReadStreamFromCli', () => {
 });
 
 describe('getArgs without symbols for config', () => {
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher', '-c', '-i');
     getArgs();
@@ -175,7 +175,7 @@ describe('getArgs without symbols for config', () => {
 });
 
 describe('getArgs with some inputs', () => {
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher', '-c', 'A', '-i', './input.txt', '-i');
     getArgs();
@@ -186,7 +186,7 @@ describe('getArgs with some inputs', () => {
 });
 
 describe('getArgs with some outputs', () => {
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher', '-c', 'A', '-o', './output.txt', '-o');
     getArgs();
@@ -197,7 +197,7 @@ describe('getArgs with some outputs', () => {
 });
 
 describe('getArgs input without value', () => {
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher', '-c', 'A', '-i');
     getArgs();
@@ -208,7 +208,7 @@ describe('getArgs input without value', () => {
 });
 
 describe('getArgs output without value', () => {
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher', '-c', 'A', '-o');
     getArgs();
@@ -219,7 +219,7 @@ describe('getArgs output without value', () => {
 });
 
 describe('getArgs with other values', () => {
-  it('should call process.stderr.write with error message', () => {
+  test('should call process.stderr.write with error message', () => {
     process.argv.length = 0;
     process.argv.push('node', 'cipher', '-c', 'A', 'other');
     getArgs();
