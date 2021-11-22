@@ -1,12 +1,24 @@
 {
   "name": "ciphering-cli-tool",
   "version": "1.0.0",
-  "description": "",
+  "description": "1. git clone https://github.com/ruslan547/ciphering-cli-tool.git",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruslan547/ciphering-cli-tool.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ruslan547/ciphering-cli-tool/issues"
+  },
+  "homepage": "https://github.com/ruslan547/ciphering-cli-tool#readme",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
 }
